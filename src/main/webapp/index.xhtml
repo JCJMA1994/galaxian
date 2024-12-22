@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+    <title>Galaxianos - Inicio</title>
+    <style>
+        body {
+            background-image: url("resources/images/space.jpg");
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .title {
+            color: red;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 24px;
+        }
+
+        .score-table {
+            margin: 30px 0;
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .table-header {
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            justify-items: center;
+        }
+
+        .header-text {
+            color: #00ff00;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .score-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            align-items: center;
+            justify-items: center;
+            margin: 10px 0;
+        }
+
+        .score-row.images {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .score-column {
+            text-align: center;
+            color: #00ff00;
+        }
+
+        .enemy-image {
+            width: 30px;
+            height: 30px;
+            margin-right: 1px;
+        }
+
+        .table-title {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .start-button {
+            background-color: #333;
+            color: white;
+            border: 2px solid #00ff00;
+            padding: 10px 30px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .start-button:hover {
+            background-color: #00ff00;
+            color: black;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <h:form>
+        <div class="title">
+            <h2>Somos la misión de los galaxianos:<br/>Destruir extraterrestres.</h2>
+        </div>
+
+        <!--             <div class="player-input">-->
+        <!--                   <label for="jugador1">Jugador 1:</label>-->
+        <!--                   <h:inputText id="jugador1" value="#{gameStartBean.jugador1}" required="true"/>-->
+        <!--               </div>-->
+
+        <!--              <div class="player-input">-->
+        <!--                    <label for="jugador2">Jugador 2:</label>-->
+        <!--                   <h:inputText id="jugador2" value="#{gameStartBean.jugador2}" required="true"/>-->
+        <!--               </div>-->
+        <div class="score-table">
+            <div class="table-title">- Tabla de avance de puntuación -</div>
+
+            <div class="table-header">
+                <div class="header-text">ENEMIGO</div>
+                <div class="header-text">NORMAL</div>
+                <div class="header-text">DUPLICADO</div>
+            </div>
+
+            <!-- Fila 1 -->
+            <div class="score-row images">
+                <div class="score-column">
+                    <img src="resources/images/azul.png" class="enemy-image" alt="Enemigo azul"/>
+                </div>
+                <div class="score-column">
+                    60 PTS
+                </div>
+                <div class="score-column">
+                    120 PTS
+                </div>
+            </div>
+
+            <!-- Fila 2 -->
+            <div class="score-row images">
+                <div class="score-column">
+                    <img src="resources/images/rojo.png" class="enemy-image" alt="Enemigo Rojo"/>
+                </div>
+                <div class="score-column">
+                    50 PTS
+                </div>
+                <div class="score-column">
+                    100 PTS
+                </div>
+            </div>
+
+            <!-- Fila 3 -->
+            <div class="score-row images">
+                <div class="score-column">
+                    <img src="resources/images/morado.png" class="enemy-image" alt="Enemigo Morado"/>
+                </div>
+                <div class="score-column">
+                    40 PTS
+                </div>
+                <div class="score-column">
+                    80 PTS
+                </div>
+            </div>
+
+            <!-- Fila 4 -->
+            <div class="score-row images">
+                <div class="score-column">
+                    <img src="resources/images/amarillo.png" class="enemy-image" alt="Enemigo Amarillo"/>
+                </div>
+                <div class="score-column">
+                    30 PTS
+                </div>
+                <div class="score-column">
+                    60 PTS
+                </div>
+            </div>
+        </div>
+        <h:commandButton value="Iniciar Juego"
+                         action="#{helloWorld.doGet}"
+                         styleClass="start-button"/>
+    </h:form>
+</h:body>
+</html>
