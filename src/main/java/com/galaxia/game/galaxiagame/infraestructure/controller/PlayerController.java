@@ -23,6 +23,8 @@ public class PlayerController extends HttpServlet implements Serializable {
 	private Player player2;
 	private String player1Name;
 	private String player2Name;
+	private boolean gameOver;
+	private boolean victory;
 
 	@PostConstruct
 	public void init() {
@@ -34,6 +36,8 @@ public class PlayerController extends HttpServlet implements Serializable {
 			player2 = new Player("2", player2Name != null ? player2Name : "Jugador 2",
 					0, 50, 700, "J", "L", "I");
 		}
+		gameOver = false;
+		victory = false;
 	}
 
 	@Override
@@ -136,5 +140,41 @@ public class PlayerController extends HttpServlet implements Serializable {
 			player2.setName(player2Name);
 		}
 		return "game.xhtml?faces-redirect=true";
+	}
+
+	public void reducePlayer1Life() {
+		if (player1.getLives() > 0) {
+			player1.loseLife();
+		}
+		checkGameOver();
+	}
+
+	public void reducePlayer2Life() {
+		if (player2.getLives() > 0) {
+			player2.loseLife();
+		}
+		checkGameOver();
+	}
+
+	public void checkGameOver() {
+		if (player1.getLives() <= 0 && player2.getLives() <= 0) {
+			gameOver = true;
+		}
+	}
+
+	public void checkVictory(int enemyCount) {
+		if (enemyCount == 0) {
+			victory = true;
+		}
+	}
+
+
+	// Métodos para aumentar puntuación
+	public void increasePlayer1Score() {
+		player1.setScore(player1.getScore() + 10);
+	}
+
+	public void increasePlayer2Score() {
+		player2.setScore(player2.getScore() + 10);
 	}
 }

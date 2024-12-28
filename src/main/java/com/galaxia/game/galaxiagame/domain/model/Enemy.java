@@ -36,19 +36,12 @@ public class Enemy extends GameObject {
 		return new Bullet(x, y + 1, 10);
 	}
 
-	public void move() {
-		// Lógica de movimiento horizontal
-		this.x += (Math.random() > 0.5) ? 10 : -10;
-	}
-
-
 	public void shoot() {
-		// Inicia un disparo
 		this.isShooting = true;
 	}
 
 	@Override
 	public void update() {
-		x += speed; // Movimiento horizontal
+		x += speed;
 	}
 }

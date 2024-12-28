@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
       xmlns:ui="jakarta.faces.facelets">
 <h:head>
     <style>
@@ -142,20 +143,28 @@
             top: 0;
         }
 
-
+        .enemy-bullet {
+            width: 5px;
+            height: 15px;
+            background-color: red;
+            position: absolute;
+        }
     </style>
     <title>Game Board</title>
-    <h:outputScript library="js" name="gameControls.js"/>
+    <script src="resources/js/gameControls.js">
+
+    </script>
 </h:head>
 <h:body>
+
     <div id="main-container">
         <h1>Galaxian Game</h1>
         <!-- Mostrar información de los jugadores -->
         <div class="player-info">
             <div class="player-stats">
                 <h:outputText value="Jugador 1: #{playerController.player1Name}"/><br/>
-                <h:outputText value="Vidas: #{playerController.player1Lives}"/><br/>
-                <h:outputText value="Puntos: #{playerController.player1Score}"/>
+                <h:outputText id="player1Lives" value="Vidas: #{playerController.player1Lives}"/><br/>
+                <h:outputText id="player1Score" value="Puntos: #{playerController.player1Score}"/>
             </div>
             <div class="player-controls">
                 <p>Controles:</p>
@@ -170,8 +179,8 @@
         <div class="player-info">
             <div class="player-stats">
                 <h:outputText value="Jugador 2: #{playerController.player2Name}"/><br/>
-                <h:outputText value="Vidas: #{playerController.player2Lives}"/><br/>
-                <h:outputText value="Puntos: #{playerController.player2Score}"/>
+                <h:outputText id="player2Lives" value="Vidas: #{playerController.player2Lives}"/><br/>
+                <h:outputText id="player2Score" value="Puntos: #{playerController.player2Score}"/>
             </div>
             <div class="player-controls">
                 <p>Controles:</p>
@@ -182,33 +191,67 @@
                 </ul>
             </div>
         </div>
-        <div id="game-board">
-            <!-- Jugador 1 -->
-            <div id="player1" class="player" style="left: 100px;">
-                <div class="player-name">#{playerController.player1Name}</div>
-                <img src="#{playerController.player1Image}" alt="Player 1" style="width: 50px; height: 50px;"/>
-            </div>
-            <!-- Jugador 2 -->
-            <div id="player2" class="player" style="left: 500px;">
-                <div class="player-name">#{playerController.player2Name}</div>
-                <img src="#{playerController.player2Image}" alt="Player 2" style="width: 50px; height: 50px;"/>
-            </div>
-            <!--  Enemigos -->
-            <ui:repeat value="#{enemyController.formation}" var="row">
-                <ui:repeat value="#{row}" var="enemy">
-                    <div class="enemy"
-                         style="left: #{enemy.x}px; top: #{enemy.y}px;"
-                         data-type="#{enemy.type}">
-                        <img src="#{enemy.image}" alt="Enemigo #{enemy.type}"
-                             style="width: 40px; height: 40px;"/>
-                    </div>
-                </ui:repeat>
-            </ui:repeat>
-        </div>
-        <h:form>
-            <h:commandButton value="End Game" action="index.xhtml" styleClass="end-game-button"/>
-        </h:form>
 
+        <h:form id="gameForm">
+            <div id="game-board">
+                <!-- Jugador 1 -->
+                <div id="player1" class="player" style="left: 100px;">
+                    <div class="player-name">#{playerController.player1Name}</div>
+                    <img src="#{playerController.player1Image}" alt="Player 1" style="width: 50px; height: 50px;"/>
+                </div>
+                <!-- Jugador 2 -->
+                <div id="player2" class="player" style="left: 500px;">
+                    <div class="player-name">#{playerController.player2Name}</div>
+                    <img src="#{playerController.player2Image}" alt="Player 2" style="width: 50px; height: 50px;"/>
+                </div>
+                <!--  Enemigos -->
+                <ui:repeat value="#{enemyController.formation}" var="row">
+                    <ui:repeat value="#{row}" var="enemy">
+                        <div class="enemy"
+                             data-score="#{enemy.points}"
+                             style="left: #{enemy.x}px; top: #{enemy.y}px;"
+                             data-type="#{enemy.type}">
+                            <img src="#{enemy.image}" alt="Enemigo #{enemy.type}"
+                                 style="width: 40px; height: 40px;"/>
+                        </div>
+                    </ui:repeat>
+                </ui:repeat>
+            </div>
+            <!-- Mensaje de Game Over o Victoria -->
+            <div id="game-status"
+                 style="display: none; text-align: center; color: yellow; font-size: 2em; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
+                #{playerController.gameOver ? 'Game Over' : (playerController.victory ? '¡Victoria!' : '')}
+            </div>
+            <!-- Botones ocultos para reducir vida -->
+            <h:commandButton id="reducePlayer1Life" actionListener="#{playerController.reducePlayer1Life}"
+                             style="display:none;"/>
+            <h:commandButton id="reducePlayer2Life" actionListener="#{playerController.reducePlayer2Life}"
+                             style="display:none;"/>
+
+            <!-- Botones ocultos para aumentar puntuación -->
+            <h:commandButton id="increasePlayer1Score" actionListener="#{playerController.increasePlayer1Score}"
+                             style="display:none;"/>
+            <h:commandButton id="increasePlayer2Score" actionListener="#{playerController.increasePlayer2Score}"
+                             style="display:none;"/>
+            <!-- Botones ocultos para acciones -->
+            <h:commandButton id="movePlayer1Left" actionListener="#{playerController.movePlayer1Left}"
+                             style="display:none;"/>
+            <h:commandButton id="movePlayer1Right" actionListener="#{playerController.movePlayer1Right}"
+                             style="display:none;"/>
+            <h:commandButton id="player1Shoot" actionListener="#{playerController.player1Shoot}"
+                             style="display:none;"/>
+
+            <h:commandButton id="movePlayer2Left" actionListener="#{playerController.movePlayer2Left}"
+                             style="display:none;"/>
+            <h:commandButton id="movePlayer2Right" actionListener="#{playerController.movePlayer2Right}"
+                             style="display:none;"/>
+            <h:commandButton id="player2Shoot" actionListener="#{playerController.player2Shoot}"
+                             style="display:none;"/>
+
+            <h:commandButton value="End Game" action="index.xhtml" styleClass="end-game-button"/>
+
+        </h:form>
     </div>
+
 </h:body>
 </html>
